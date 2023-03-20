@@ -1,18 +1,7 @@
 <?php
 
-namespace Tests\Unit;
+  test('example', function () {
 
-use PHPUnit\Framework\TestCase;
+    $this->assertTrue(true);
 
-class ExampleTest extends TestCase
-{
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function test_example()
-    {
-        $this->assertTrue(true);
-    }
-}
+  });
