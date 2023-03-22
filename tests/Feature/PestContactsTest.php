@@ -15,7 +15,6 @@ afterEach(fn () => var_dump('After Each'));
 afterAll(fn () => var_dump('After All'));
 */
 
-
 beforeEach(function () {
     $this->user = User::factory()->create([
         'account_id' => Account::create(['name' => 'Acme Corporation'])->id,
@@ -83,7 +82,7 @@ test('can_view_contacts', function () {
         );
 });
 
-test('can_search_for_contacts', function() {
+test('can_search_for_contacts', function () {
     $this->actingAs($this->user)
         ->get('/contacts?search=Martin')
         ->assertInertia(fn (Assert $assert) => $assert
@@ -103,7 +102,7 @@ test('can_search_for_contacts', function() {
         );
 });
 
-test('cannot_view_deleted_contacts', function() {
+test('cannot_view_deleted_contacts', function () {
     $this->user->account->contacts()->firstWhere('first_name', 'Martin')->delete();
 
     $this->actingAs($this->user)
@@ -115,7 +114,7 @@ test('cannot_view_deleted_contacts', function() {
         );
 });
 
-test ('can_filter_to_view_deleted_contacts', function() {
+test('can_filter_to_view_deleted_contacts', function () {
     $this->user->account->contacts()->firstWhere('first_name', 'Martin')->delete();
 
     $this->actingAs($this->user)

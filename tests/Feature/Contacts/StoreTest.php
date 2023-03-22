@@ -3,20 +3,18 @@
 use App\Models\Contact;
 use function Pest\Faker\fake;
 
-
-it('can store a contact', function () {
-
-    login()->post('/contacts', [
+it('can store a contact', function (array $data) {
+    login()->post('/contacts', [...[
         'first_name' => fake()->firstName,
         'last_name' => fake()->lastName,
         'email' => fake()->email,
         'phone' => fake()->e164PhoneNumber,
         'address' => '1 Test Street',
-        'city' => 'Testerfield',
+        'city' => 'Chester Field',
         'region' => 'Derbyshire',
         'country' => fake()->randomElement(['us', 'ca']),
         'postal_code' => fake()->postcode,
-    ])
+    ], ...$data])
         ->assertRedirect('/contacts')
         ->assertSessionHas('success', 'Contact created.');
 
@@ -27,4 +25,10 @@ it('can store a contact', function () {
         ->phone->toBePhoneNumber()
         ->region->toBe('Derbyshire')
         ->country->toBeIn(['us', 'ca']);
-});
+})->with([
+    'generic' => [[]],
+    'random' => [['email' => fake()->email]],
+    'personal' => [['email' => '"joe lee"@joelee.io', 'first_name' => 'Joe']],
+]);
+
+/** you can also share databsets  pass into test with ->with('emails') */

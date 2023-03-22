@@ -18,7 +18,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 
 uses(
     Tests\TestCase::class,
-    // Illuminate\Foundation\Testing\RefreshDatabase::class,
 )->in('Feature');
 
 /*
@@ -37,21 +36,17 @@ expect()->extend('toBeOne', function () {
 });
 
 expect()->extend('toBePhoneNumber', function () {
-
     $phoneNumber = Str::of($this->value)->after('+')->__toString();
 
-    if(strlen($phoneNumber) < 6) {
+    if (strlen($phoneNumber) < 6) {
         throw new ExpectationFailedException('Phone number must be 6 characters.');
     }
 
-
-    if(!is_numeric($phoneNumber)) {
+    if (! is_numeric($phoneNumber)) {
         throw new ExpectationFailedException('Phone number must be numeric.');
     }
 
     return true;
-
-
 });
 
 /*

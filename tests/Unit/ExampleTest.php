@@ -1,7 +1,5 @@
 <?php
 
   test('example', function () {
-
-    $this->assertTrue(true);
-
+      $this->assertTrue(true);
   });
