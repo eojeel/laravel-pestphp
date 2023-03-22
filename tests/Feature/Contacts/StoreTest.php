@@ -1,21 +1,21 @@
 <?php
 
 use App\Models\Contact;
-use function Pest\Faker\faker;
+use function Pest\Faker\fake;
 
 
 it('can store a contact', function () {
 
     login()->post('/contacts', [
-        'first_name' => faker()->firstName,
-        'last_name' => faker()->lastName,
-        'email' => faker()->email,
-        'phone' => faker()->e164PhoneNumber,
+        'first_name' => fake()->firstName,
+        'last_name' => fake()->lastName,
+        'email' => fake()->email,
+        'phone' => fake()->e164PhoneNumber,
         'address' => '1 Test Street',
         'city' => 'Testerfield',
         'region' => 'Derbyshire',
-        'country' => faker()->randomElement(['us', 'ca']),
-        'postal_code' => faker()->postcode,
+        'country' => fake()->randomElement(['us', 'ca']),
+        'postal_code' => fake()->postcode,
     ])
         ->assertRedirect('/contacts')
         ->assertSessionHas('success', 'Contact created.');

@@ -13,6 +13,8 @@
 
 use App\Models\Account;
 use App\Models\User;
+use Illuminate\Support\Str;
+use PHPUnit\Framework\ExpectationFailedException;
 
 uses(
     Tests\TestCase::class,
@@ -32,6 +34,24 @@ uses(
 
 expect()->extend('toBeOne', function () {
     return $this->toBe(1);
+});
+
+expect()->extend('toBePhoneNumber', function () {
+
+    $phoneNumber = Str::of($this->value)->after('+')->__toString();
+
+    if(strlen($phoneNumber) < 6) {
+        throw new ExpectationFailedException('Phone number must be 6 characters.');
+    }
+
+
+    if(!is_numeric($phoneNumber)) {
+        throw new ExpectationFailedException('Phone number must be numeric.');
+    }
+
+    return true;
+
+
 });
 
 /*
