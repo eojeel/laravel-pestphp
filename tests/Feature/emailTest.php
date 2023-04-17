@@ -1,22 +1,27 @@
 <?php
 
 use App\Rules\IsValidEmailAddress;
+use Illuminate\Support\Facades\Validator;
 
 uses()->group('email');
 
 it('can validate an email', function () {
+    $validator = Validator::make(['email' => 'me@me.com'], ['email' => new IsValidEmailAddress()]);
 
-    $rule = new IsValidEmailAddress();
-
-    expect($rule->passes('email', 'me@you.com'))->toBeTrue();
-
+    expect($validator->validated())->toBe(['email' => 'me@me.com']);
 })->skip(getenv('SKIP_TESTS') ?? false, 'Skip tests');
 
 
-it('throws an exception if the value is not a string', function () {
+it('validation fails for non string', function () {
+    $validator = Validator::make(['email' => 123], ['email' => new IsValidEmailAddress()]);
 
-        $rule = new IsValidEmailAddress();
+    $validator->validate();
 
-        $rule->passes('email', 123);
+})->throws('The value must be a string!');
 
-})->throws('InvalidArgumentException', 'The value must be a string!');
+it('validation fails for string', function () {
+    $validator = Validator::make(['email' => 'testing'], ['email' => new IsValidEmailAddress()]);
+
+    $validator->validate();
+
+})->throws('The value must be a valid email address!');
