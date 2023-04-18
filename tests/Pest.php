@@ -13,7 +13,10 @@
 
 use App\Models\Account;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Testing\TestResponse;
+use Inertia\Testing\AssertableInertia;
 use PHPUnit\Framework\ExpectationFailedException;
 
 uses(
@@ -47,6 +50,16 @@ expect()->extend('toBePhoneNumber', function () {
     }
 
     return true;
+});
+
+expect()->intercept('toBe', Model::class, function ($value) {
+
+    expect($this->value->is($value))->toBeTrue(message: "Failed asserting that {$this->value} is equal to {$value}.");
+});
+
+expect()->intercept('toContain', TestResponse::class, function (...$value) {
+
+    $this->value->assertInertia(fn (AssertableInertia $assert) => $assert->has(...$value));
 });
 
 /*

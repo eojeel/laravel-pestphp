@@ -10,10 +10,9 @@ it('does not use debugging functions', function () {
     ])->not()->toBeUsed();
 });
 
-
 it('uses the correct redirect function', function () {
 
-    expect(['back','redirect', 'route', 'action'])
+    expect(['back', 'redirect', 'route', 'action'])
         ->not->toBeUsedIn('App\\Http\\Controllers\\');
 });
 

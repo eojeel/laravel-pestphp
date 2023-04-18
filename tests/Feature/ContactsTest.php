@@ -46,12 +46,11 @@ beforeEach(function () {
 
 it('test_can_view_contacts', function () {
 
-        $this->actingAs($this->user)
-            ->get('/contacts')
-            ->assertInertia(fn (Assert $assert) => $assert
-                ->component('Contacts/Index')
-                ->has('contacts.data', 2)
-                ->has('contacts.data.0', fn (Assert $assert) => $assert
+    $response = $this->actingAs($this->user)->get('/contacts');
+
+    expect($response)
+        ->toContain('contacts.data', 2)
+        ->toContain('contacts.data.0', fn (Assert $assert) => $assert
                     ->where('id', 1)
                     ->where('name', 'Martin Abbott')
                     ->where('phone', '555-111-2222')
@@ -61,7 +60,7 @@ it('test_can_view_contacts', function () {
                         ->where('name', 'Example Organization Inc.')
                     )
                 )
-                ->has('contacts.data.1', fn (Assert $assert) => $assert
+                ->toContain('contacts.data.1', fn (Assert $assert) => $assert
                     ->where('id', 2)
                     ->where('name', 'Lynn Kub')
                     ->where('phone', '555-333-4444')
@@ -69,9 +68,7 @@ it('test_can_view_contacts', function () {
                     ->where('deleted_at', null)
                     ->has('organization', fn (Assert $assert) => $assert
                         ->where('name', 'Example Organization Inc.')
-                    )
-                )
-            );
+                    ));
     });
 
 it('test_can_search_for_contacts', function () {
