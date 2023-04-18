@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Storage;
 
 it('can show supported image format options', function (string $path, array $options) {
 
-    Storage::fake()->put($path, file_get_contents(__DIR__ . "/../../fixtures/{$path}"));
+    Storage::fake()->put($path, file_get_contents(__DIR__."/../../fixtures/{$path}"));
 
     $response = $this->get(route('image', ['path' => $path, ...$options]));
 

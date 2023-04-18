@@ -11,7 +11,6 @@ it('can validate an email', function () {
     expect($validator->validated())->toBe(['email' => 'me@me.com']);
 })->skip(getenv('SKIP_TESTS') ?? false, 'Skip tests');
 
-
 it('validation fails for non string', function () {
     $validator = Validator::make(['email' => 123], ['email' => new IsValidEmailAddress()]);
 

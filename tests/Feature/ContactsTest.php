@@ -4,18 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Account;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
-use Tests\TestCase;
 
-class ContactsTest extends TestCase
-{
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
+beforeEach(function () {
         $this->user = User::factory()->create([
             'account_id' => Account::create(['name' => 'Acme Corporation'])->id,
             'first_name' => 'John',
@@ -51,10 +42,10 @@ class ContactsTest extends TestCase
                 'postal_code' => '11623',
             ],
         ]);
-    }
+    });
 
-    public function test_can_view_contacts()
-    {
+it('test_can_view_contacts', function () {
+
         $this->actingAs($this->user)
             ->get('/contacts')
             ->assertInertia(fn (Assert $assert) => $assert
@@ -81,10 +72,9 @@ class ContactsTest extends TestCase
                     )
                 )
             );
-    }
+    });
 
-    public function test_can_search_for_contacts()
-    {
+it('test_can_search_for_contacts', function () {
         $this->actingAs($this->user)
             ->get('/contacts?search=Martin')
             ->assertInertia(fn (Assert $assert) => $assert
@@ -102,10 +92,9 @@ class ContactsTest extends TestCase
                     )
                 )
             );
-    }
+    });
 
-    public function test_cannot_view_deleted_contacts()
-    {
+it('test_cannot_view_deleted_contacts', function () {
         $this->user->account->contacts()->firstWhere('first_name', 'Martin')->delete();
 
         $this->actingAs($this->user)
@@ -115,10 +104,10 @@ class ContactsTest extends TestCase
                 ->has('contacts.data', 1)
                 ->where('contacts.data.0.name', 'Lynn Kub')
             );
-    }
+    });
 
-    public function test_can_filter_to_view_deleted_contacts()
-    {
+it('test_can_filter_to_view_deleted_contacts', function () {
+
         $this->user->account->contacts()->firstWhere('first_name', 'Martin')->delete();
 
         $this->actingAs($this->user)
@@ -129,5 +118,4 @@ class ContactsTest extends TestCase
                 ->where('contacts.data.0.name', 'Martin Abbott')
                 ->where('contacts.data.1.name', 'Lynn Kub')
             );
-    }
-}
+});
